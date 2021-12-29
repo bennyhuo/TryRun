@@ -1,10 +1,11 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm'
     id 'java'
+    id 'com.vanniktech.maven.publish'
 }
 
-group 'com.bennyhuo.kotlin'
-version '1.0'
+group = GROUP
+version = VERSION_NAME
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"

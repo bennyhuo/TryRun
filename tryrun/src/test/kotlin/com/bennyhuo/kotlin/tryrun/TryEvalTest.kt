@@ -8,28 +8,18 @@ import java.io.IOException
 import java.lang.UnsupportedOperationException
 import kotlin.random.Random
 
-class TryRunTest {
+class TryEvalTest {
 
     @Test
     fun testCatch() {
-        tryRun {
+        val result = tryEval {
             throw IllegalStateException()
+            1
         } catch { e: Exception ->
-            assertEquals(e.javaClass, IllegalStateException::class.java)
+            2
         }
-    }
 
-    @Test
-    fun testCatch2() {
-        try {
-            tryRun {
-                throw IllegalStateException()
-            } catch { e: IOException ->
-                assertEquals(1, 2)
-            }
-        } catch (e: Exception) {
-            assertEquals(e.javaClass, IllegalStateException::class.java)
-        }
+        assertEquals(result, 2)
     }
 
     @Test
@@ -44,45 +34,47 @@ class TryRunTest {
         )
 
         val i = Random.nextInt(0, data.size)
-        tryRun {
+        val result = tryEval {
             throw data[i].newInstance()
+            -1
         } catching { e: NullPointerException ->
-            assertEquals(i, 0)
+            0
         } catching { e: IllegalAccessException ->
-            assertEquals(i, 1)
+            1
         } catching { e: UnsupportedOperationException ->
-            assertEquals(i, 2)
+            2
         } catching { e: IOException ->
-            assertEquals(i, 3)
+            3
         } catching { e: IllegalStateException ->
-            assertEquals(i, 4)
+            4
         } catchAll {
-            assertEquals(i, -1)
+            -1
         }
+
+        assertEquals(i, result)
     }
 
     @Test
     fun testFinally() {
-        var a = 1
-        tryRun {
+        val a = tryEval {
             throw IllegalStateException()
+            1
         } catching { e: Exception ->
-            a = 3
+            2
         } finally {
-            a = 4
+            3
         }
 
-        assertEquals(a, 4)
+        assertEquals(a, 2)
 
-        a = 1
-        tryRun {
-            a = 2
+        val b = tryEval {
+            1
         } catching { e: Exception ->
-            a = 3
+            2
         } finally {
-            a = 4
+            3
         }
 
-        assertEquals(a, 4)
+        assertEquals(b, 1)
     }
 }
