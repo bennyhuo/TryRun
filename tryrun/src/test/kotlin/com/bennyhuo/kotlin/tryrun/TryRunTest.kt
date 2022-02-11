@@ -25,11 +25,13 @@ class TryRunTest {
             tryRun {
                 throw IllegalStateException()
             } catch { e: IOException ->
-                assertEquals(1, 2)
+                assert(false)
             }
         } catch (e: Exception) {
             assertEquals(e.javaClass, IllegalStateException::class.java)
+            return
         }
+        assert(false)
     }
 
     @Test
@@ -56,6 +58,8 @@ class TryRunTest {
             assertEquals(i, 3)
         } catching { e: IllegalStateException ->
             assertEquals(i, 4)
+        } catching { e: RuntimeException ->
+            assertEquals(i, 5)
         } catchAll {
             assertEquals(i, -1)
         }

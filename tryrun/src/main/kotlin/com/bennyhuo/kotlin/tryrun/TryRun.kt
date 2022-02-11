@@ -22,7 +22,10 @@ inline infix fun <reified T : Throwable> TryRunResult.catch(block: (t: T) -> Uni
     if (throwable is CancellationException) throw throwable
     if (throwable is T) {
         block(throwable)
+        return
     }
+    if (throwable != null)
+        throw throwable
 }
 
 inline infix fun TryRunResult.catchAll(block: (t: Throwable) -> Unit) {

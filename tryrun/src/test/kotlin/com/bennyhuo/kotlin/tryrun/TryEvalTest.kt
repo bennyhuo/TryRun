@@ -1,11 +1,8 @@
 package com.bennyhuo.kotlin.tryrun
 
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Test
 import java.io.IOException
-import java.lang.UnsupportedOperationException
 import kotlin.random.Random
 
 class TryEvalTest {
@@ -47,6 +44,8 @@ class TryEvalTest {
             3
         } catching { e: IllegalStateException ->
             4
+        } catching { e: RuntimeException ->
+            5
         } catchAll {
             -1
         }
