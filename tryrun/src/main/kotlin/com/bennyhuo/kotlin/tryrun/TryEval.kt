@@ -26,10 +26,14 @@ infix fun <R> TryResult<R>.onCancel(block: (e: CancellationException) -> Unit): 
 
 inline infix fun <reified T : Throwable, R> TryResult<R>.catch(block: (t: T) -> R): R {
     if (value is CancellationException) throw value
-    return if (value is T) {
-        block(value)
+    if (value is Throwable) {
+        if (value is T) {
+            return block(value)
+        } else {
+            throw throwable
+        }  
     } else {
-        value as R
+        return value as R
     }
 }
 
