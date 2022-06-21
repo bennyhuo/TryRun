@@ -30,7 +30,7 @@ inline infix fun <reified T : Throwable, R> TryResult<R>.catch(block: (t: T) -> 
         if (value is T) {
             return block(value)
         } else {
-            throw throwable
+            throw value
         }  
     } else {
         return value as R
